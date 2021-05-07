@@ -52,7 +52,7 @@ ostream& operator<<(ostream& O, const Coord& C)
 /* CLASSE NOH        */
 /* ***************** */
 
-//heurística
+//heurÃ­stica
 
 
 double Noh::heuristica(Coord destino)
@@ -466,7 +466,7 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
                             if(oldA == aberto.end() && oldF == fechado.end())
                             {
                                 list<Noh>::iterator itera;
-                                itera = find_if(aberto.begin(),aberto.end(), fuc(suc));
+                                itera = find_if(aberto.begin(),aberto.end(), teste(suc));
                                 aberto.insert(itera,suc);
                             }
 
