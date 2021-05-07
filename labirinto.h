@@ -87,8 +87,19 @@ public:
 
   inline bool operator==(Coord c){return pos==c;}
   inline bool operator!=(Coord c){return !operator==(c);}
-  inline bool operator==(Noh n){return pos==n.pos;}     //atenção aqui
+  inline bool operator==(Noh n){return pos==n.pos;}     //atenção aqui BASTA
   inline bool operator<(Noh n){return getCusto()<n.getCusto();}
+};
+
+class fuc
+{
+private:
+    Noh suc;
+public:
+    inline fuc(Noh s):suc(s){};
+    inline bool operator()(Noh n){
+        return suc.getCusto()<n.getCusto();
+    }
 };
 
 

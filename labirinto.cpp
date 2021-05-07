@@ -402,11 +402,13 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
     aberto.push_back(atual);
 
 
+
+
     do
     {
         atual = aberto.front();
         aberto.pop_front();
-        fechado.push_back(atual);
+        fechado.push_front(atual);
 
         if (atual.pos != dest)
         {
@@ -431,15 +433,14 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
                         suc.pos = prox;
                         suc.ant = atual.pos;
                         suc.g = atual.g + norm(dir);
-                        suc.h = suc.heuristica(dest); //
-                            //list<Noh>::iterator oldF;
-                            oldF = find(fechado.begin(),fechado.end(), suc);
-                            if (oldF != fechado.end())  //conferir como vai realizar por elemento
-                            {
-                                Noh interadorF = *oldF;     //atenção aqui
-                                if (suc.h < interadorF.h)   //atenção aqui
-                                {
+                        suc.h = suc.heuristica(dest);
 
+                            oldF = find(fechado.begin(),fechado.end(), suc);
+                            if (oldF != fechado.end())
+                            {
+                                Noh interadorF = *oldF;
+                                if (suc.h < interadorF.h)
+                                {
                                     fechado.erase(oldF);
                                     oldF = fechado.end();
                                 }
@@ -450,10 +451,12 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
                             {
                                 oldA = find(aberto.begin(),aberto.end(), suc);
 
+
+
                                 if(oldA != aberto.end())
                                 {
-                                    Noh iteradorA = *oldA;  // atenção aqui
-                                    if (suc.h < iteradorA.h) //atenção aqui
+                                    Noh iteradorA = *oldA;
+                                    if (suc.h < iteradorA.h)
                                     {
                                         aberto.erase(oldA);
                                         oldA = aberto.end();
@@ -463,13 +466,8 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
                             if(oldA == aberto.end() && oldF == fechado.end())
                             {
                                 list<Noh>::iterator itera;
-                                //cout << "FLAG CRIOU ITERADOR" << endl;
-                                itera = find(aberto.begin(),aberto.end(), suc);
-                                //cout << "FLAG ATRIBUIÇÃO A ITERADOR" << endl;
+                                itera = find_if(aberto.begin(),aberto.end(), fuc(suc));
                                 aberto.insert(itera,suc);
-                                //cout << "FLAG INSERTE EM SUC" << endl;
-                                //cout << "fechado.size = " << fechado.size() << "  -----  "  <<"aberto.size = " << aberto.size() << endl;
-
                             }
 
                         }
@@ -497,13 +495,9 @@ double Labirinto::calculaCaminho(int& NC, int& NA, int& NF)
         NC = 1;
         while(atual.ant != orig)
         {
-           // cout << "entrou no laço" << endl;
             list<Noh>::iterator anterior;
-            //cout << "criou o iterador" << endl;
             set(atual.ant)=EstadoCel::CAMINHO;
-            //cout << "setor atual" << atual.ant.lin << " ------ " << atual.ant.col << endl;
             anterior = find(fechado.begin(),fechado.end(), atual.ant);
-            //cout << "busca feita" << endl;
             atual = *anterior;
             NC++;
         }
